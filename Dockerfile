@@ -1,3 +1,4 @@
+#  MERGE TEST
 # Stage 1: Build the JAR using Maven and Java 11
 FROM maven:3.9.6-eclipse-temurin-11 AS builder
 
@@ -26,3 +27,4 @@ COPY config.properties config.properties
 
 # Run the app with full classpath (app + dependencies)
 CMD ["java", "-cp", "app.jar:lib/*", "org.example.ExtensionCustomLogic"]
+
