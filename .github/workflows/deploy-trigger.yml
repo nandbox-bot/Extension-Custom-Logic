@@ -13,8 +13,10 @@ jobs:
     steps:
       - name: Send POST to Webhook
         run: |
-          curl -X POST ${{ secrets.WEBHOOK_URL }} \
+          # curl -X POST ${{ secrets.WEBHOOK_URL }} \
+          curl -X POST http://0.0.0.0:9000/webhook \
             -H "Content-Type: application/json" \
             -d '{
               "bot_name": "${{ github.repository }}"
             }'
+
