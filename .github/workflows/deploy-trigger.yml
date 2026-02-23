@@ -16,7 +16,6 @@ jobs:
           curl -X POST ${{ secrets.WEBHOOK_URL }} \
             -H "Content-Type: application/json" \
             -d '{
-              "bot_name": "${{ github.repository }}"
+              "bot_name": "${{ github.repository }}",
+              "branch": "${{ github.event.workflow_run.head_branch }}"
             }'
-
-
