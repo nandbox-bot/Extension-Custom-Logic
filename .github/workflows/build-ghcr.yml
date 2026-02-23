@@ -9,20 +9,20 @@ permissions:
   packages: write
 
 jobs:
-  build-and-push:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set lowercase repo
-        run: echo "REPO_LC=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
-      
-      - name: Set lowercase branch
-        run: echo "BRANCH_LC=${GITHUB_REF_NAME,,}" >> $GITHUB_ENV
+      # Convert repo + branch to lowercase safely
+      - name: Prepare lowercase variables
+        run: |
+          echo "REPO_LC=$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+          echo "BRANCH_LC=$(echo $GITHUB_REF_NAME | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
-      - name: Log in to GitHub Container Registry
+      - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -35,5 +35,20 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/${{ env.REPO_LC }}:${{ env.BRANCH_LC }}
+
+      # Optional: show built image
+      - name: Print image info
+        run: echo "Built image ghcr.io/${{ env.REPO_LC }}:${{ env.BRANCH_LC }}"
+
+      - name: Send POST to Webhook
+        run: |
+          curl -X POST ${{ secrets.WEBHOOK_URL }} \
+            -H "Content-Type: application/json" \
+            -d '{
+              "bot_name": "${{ github.repository }}",
+              "branch": "${{ github.ref_name }}",
+              "image": "ghcr.io/${{ env.REPO_LC }}:${{ env.BRANCH_LC }}"
+            }'
           #cache-from: type=gha
           #cache-to: type=gha,mode=max
+
