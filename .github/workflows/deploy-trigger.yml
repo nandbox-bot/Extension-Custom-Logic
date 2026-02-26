@@ -17,5 +17,6 @@ jobs:
             -H "Content-Type: application/json" \
             -d '{
               "bot_name": "${{ github.repository }}",
-              "branch": "${{ github.event.workflow_run.head_branch }}"
+              "branch": "main"
             }'
+
