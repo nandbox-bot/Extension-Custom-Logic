@@ -18,7 +18,7 @@ public class ExtensionCustomLogic extends CallbackAdapter {
     private Nandbox.Api api;
 
     public static void main(String[] args) throws Exception {
-        String TOKEN = "90091783774563703:0:wEkkjXLxIv24p9wCQc7DbUNkeO8SFK";
+        String TOKEN = "90091783826773247:0:n9Lfy2KzcGr9YpUcsOAdSrXWvjEdAE";
         NandboxClient client = NandboxClient.get();
         client.connect(TOKEN, new ExtensionCustomLogic());
     }
