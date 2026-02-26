@@ -35,12 +35,4 @@ jobs:
           #cache-from: type=gha
           #cache-to: type=gha,mode=max
 
-      - name: Send POST to Webhook
-        run: |
-          curl -X POST ${{ secrets.WEBHOOK_URL }} \
-            -H "Content-Type: application/json" \
-            -d '{
-              "bot_name": "${{ github.repository }}",
-              "branch": "${{ github.ref_name }}"
-            }'
 
